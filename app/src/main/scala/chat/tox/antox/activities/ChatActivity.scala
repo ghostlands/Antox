@@ -14,7 +14,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget._
 import chat.tox.antox.R
-import chat.tox.antox.av.{CameraUtils, Call}
+import chat.tox.antox.av.{Call, CameraUtils}
 import chat.tox.antox.data.State
 import chat.tox.antox.theme.ThemeManager
 import chat.tox.antox.tox.{MessageHelper, ToxSingleton}
@@ -49,7 +49,7 @@ class ChatActivity extends GenericChatActivity[FriendKey] {
     getSupportActionBar.setDisplayHomeAsUpEnabled(true)
     ThemeManager.applyTheme(this, getSupportActionBar)
 
-    this.findViewById(R.id.info).setVisibility(View.GONE)
+    //findViewById(R.id.info).setVisibility(View.GONE)
 
     /* Set up on click actions for attachment buttons. Could possible just add onClick to the XML?? */
     val attachmentButton = findViewById(R.id.attachment_button)
@@ -143,8 +143,8 @@ class ChatActivity extends GenericChatActivity[FriendKey] {
       .subscribeOn(IOScheduler())
       .observeOn(AndroidMainThreadScheduler())
       .subscribe(fi => {
-      updateDisplayedState(fi)
-    })
+        updateDisplayedState(fi)
+      })
 
     activeCallSubscription =
       Some(State.callManager.activeCallObservable.observeOn(AndroidMainThreadScheduler()).subscribe(activeCalls => {
@@ -223,8 +223,8 @@ class ChatActivity extends GenericChatActivity[FriendKey] {
         }
       }
       if (requestCode == Constants.PHOTO_RESULT) {
-          photoPath.foreach(path => State.transfers.sendFileSendRequest(path, this.activeKey, FileKind.DATA, ToxFileId.empty, this))
-          photoPath = None
+        photoPath.foreach(path => State.transfers.sendFileSendRequest(path, this.activeKey, FileKind.DATA, ToxFileId.empty, this))
+        photoPath = None
       }
     } else {
       AntoxLog.debug("onActivityResult result code not okay, user cancelled")

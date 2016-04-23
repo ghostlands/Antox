@@ -13,10 +13,8 @@ import chat.tox.antox.av.MissedCallNotification
 import chat.tox.antox.callbacks.AntoxOnSelfConnectionStatusCallback
 import chat.tox.antox.data.{AntoxDB, CallEventKind, State}
 import chat.tox.antox.tox.ToxSingleton
-import chat.tox.antox.wrapper.{FriendKey, BitmapUtils, ToxKey}
-import im.tox.tox4j.core.data.ToxNickname
 import chat.tox.antox.utils.TimestampUtils._
-import chat.tox.antox.wrapper._
+import chat.tox.antox.wrapper.{BitmapUtils, FriendKey, ToxKey, _}
 import im.tox.tox4j.core.enums.{ToxConnection, ToxUserStatus}
 import rx.lang.scala.Subscription
 import rx.lang.scala.schedulers.AndroidMainThreadScheduler
@@ -235,7 +233,7 @@ object AntoxNotificationManager {
     persistBuilder = None
   }
 
-  def updatePersistentNotification(ctx: Context, toxConnection: ToxConnection) {
+  def updatePersistentNotification(ctx: Context, status: ToxConnection) {
     AntoxLog.debug("Updating persistent notification")
 
     persistBuilder.foreach(builder => {
@@ -247,11 +245,9 @@ object AntoxNotificationManager {
   }
 
   private def getStatus(ctx: Context): String = {
-    val preferences = PreferenceManager.getDefaultSharedPreferences(ctx)
-    if (!ToxSingleton.isToxConnected(preferences, ctx) ||
-      ToxSingleton.tox == null) {
-      ctx.getString(R.string.status_offline)
-    } else {
+    if (ToxSingleton.tox == null) return ctx.getString(R.string.status_offline)
+
+    if (ToxSingleton.tox.getSelfConnectionStatus != ToxConnection.NONE) {
       ToxSingleton.tox.getStatus match {
         case ToxUserStatus.NONE =>
           ctx.getString(R.string.status_online)
@@ -261,6 +257,7 @@ object AntoxNotificationManager {
           ctx.getString(R.string.status_busy)
       }
     }
+    else ctx.getString(R.string.status_offline)
   }
 
   def addAlerts(builder: NotificationCompat.Builder, preferences: SharedPreferences) {

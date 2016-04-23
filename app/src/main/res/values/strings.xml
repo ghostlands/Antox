@@ -44,7 +44,6 @@
     <string name="create_account_load_profile_unknown">Unknown error loading profile</string>
 
 
-
     <!-- Main Activity -->
     <string name="main_no_active_chat">No active chat. Start one by choosing a friend from the pane on the left.</string>
     <string name="main_recent_no">No recent conversations</string>
@@ -63,6 +62,10 @@
     <string name="call_friend">Call</string>
     <string name="video_call_friend">Video Call</string>
     <string name="info">Info</string>
+
+    <!-- Settings Activity -->
+    <string name="proxy_address_invalid">Please enter a correct hostname or ip-address</string>
+    <string name="proxy_port_invalid">Please enter a correct port number value between 1 and 65535</string>
 
     <!-- Add Pane Fragment -->
     <string name="addpane_friend_label">Friend</string>
